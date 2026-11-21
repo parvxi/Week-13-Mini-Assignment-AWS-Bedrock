@@ -1,8 +1,5 @@
 # Building with Amazon Bedrock — Workshop Report
 
-**IDS 706 · Week 13 Mini Assignment** · Shahad Baalkhashir
-Workshop: *Building with Amazon Bedrock* (AWS Workshop Studio, Duke event, Nov 2026) · Region: `us-west-2`
-
 This repo documents the AWS Bedrock workshop labs I completed. It's meant to work as a practical reference for later projects (RAG chatbots, AI assistants, GenAI apps with guardrails).
 
 ---
@@ -21,24 +18,24 @@ This repo documents the AWS Bedrock workshop labs I completed. It's meant to wor
 
 ## 1. Summary of completed labs
 
-| Category | Lab | Status | Main concept |
-|---|---|---|---|
-| Text patterns (required) | I-1 Chatbot with RAG | ✅ | Converse API + **tool use** decides when to retrieve from a Chroma vector DB |
-| | I-2 Document summarization | ✅ | **Document chat**: pass a PDF directly in the Converse request |
-| | I-3 Response streaming | ✅ | `converse_stream` with token-by-token UI updates |
-| | I-4 Embeddings search | ✅ | Titan Embeddings + vector similarity search (no LLM) |
-| Security & safeguards (required) | S-1 Guardrails in the console | ✅ | Building and testing a guardrail with every policy type |
-| | S-2 Guardrails programmatically | ✅ | `create_guardrail` + `create_guardrail_version` with boto3 |
-| | S-3 Invoking models with guardrails | ✅ | `invoke_model(guardrailIdentifier=…, trace='ENABLED')` |
-| | S-4 Content blocking | ✅ | Content filters, denied topics, word filters (input **and** output) |
-| | S-5 PII masking | ✅ | Sensitive-information filters (`ANONYMIZE`) |
-| | S-6 Prompt attack blocking | ✅ | `PROMPT_ATTACK` filter against prompt injection |
-| Bonus (required) | O-1 Prompt showcase | ✅ | Prompt templates with a `{user_input}` placeholder |
-| | O-2 Text generation playground | ✅ | Inference parameters (temperature, top P, max tokens) |
+All required labs: Text Patterns (I-1 to I-4), Security & Safeguards (S-1 to S-6), and both Bonus labs.
 
-**Models used:** Anthropic **Claude Sonnet 4.5** (`us.anthropic.claude-sonnet-4-5-20250929-v1:0`), Amazon **Nova Lite** and **Nova Micro**, and **Titan Text Embeddings v2**.
+| Lab | What it covers |
+|---|---|
+| I-1 Chatbot with RAG | A chatbot that decides on its own when to search a knowledge base (tool use + vector search) |
+| I-2 Document summarization | Sending a PDF directly to Claude and summarizing it for a specific audience |
+| I-3 Response streaming | Showing the answer word by word instead of waiting for the full response |
+| I-4 Embeddings search | Searching documents by meaning with Titan Embeddings, no LLM involved |
+| S-1 Guardrails in the console | Building a guardrail by hand and testing every policy type |
+| S-2 Guardrails in code | Creating the same guardrail with boto3 |
+| S-3 Invoking models with guardrails | Attaching a guardrail to a model call and reading the trace |
+| S-4 Content blocking | Content filters, denied topics and word filters, on both input and output |
+| S-5 PII masking | Hiding names and emails in responses |
+| S-6 Prompt attack blocking | Catching prompt injection |
+| O-1 Prompt showcase | One app, many use cases, using prompt templates |
+| O-2 Text playground | Testing temperature, top P and max tokens |
 
-> **Environment note:** the workshop code targets Claude 3.7 Sonnet, which has been retired on Bedrock (calls returned *"This model version has reached the end of its life"*). I listed the available inference profiles with `aws bedrock list-inference-profiles` and switched the model ID to Claude Sonnet 4.5. The code snippets below show the updated ID.
+Models used: Claude Sonnet 4.5, Amazon Nova Lite, Amazon Nova Micro, and Titan Text Embeddings v2. The workshop code uses Claude 3.7 Sonnet, which has been retired on Bedrock, so I switched to Claude Sonnet 4.5.
 
 ---
 
@@ -442,7 +439,3 @@ response = bedrock.converse(
 | Document assistant (contracts, reports) | I-2's document chat for single files; I-3 streaming for long answers |
 | Any user-facing GenAI app | An S-2-style guardrail created in code: content filters + prompt-attack filter on input, PII masking, denied topics for off-scope requests |
 | Internal demo for non-technical teams | O-1 template showcase pattern with editable prompts |
-
----
-
-*Workshop: AWS Workshop Studio — "Building with Amazon Bedrock". Code snippets are short excerpts from the labs I completed.*
